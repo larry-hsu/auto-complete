@@ -1,0 +1,132 @@
+[
+  {
+    "word": "apple",
+    "often": 1,
+    "nextword": [
+      {
+        "word": "is",
+        "often": 1
+      },
+      {
+        "word": "com",
+        "often": 2
+      }
+    ]
+  },
+  {
+    "word": "tel",
+    "often": 1,
+    "nextword": [
+      {
+        "word": "025-95232302",
+        "often": 1
+      }
+    ]
+  },
+  {
+    "word": "tomorrow",
+    "often": 1,
+    "nextword": [
+      {
+        "word": "anthorday",
+        "often": 1
+      },
+      {
+        "word": "after",
+        "often": 2
+      }
+    ]
+  },
+  {
+    "word": "is",
+    "often": 1,
+    "nextword": [
+      {
+        "word": "me",
+        "often": 1
+      },
+      {
+        "word": "ok",
+        "often": 2
+      }
+    ]
+  },
+  {
+    "word": "and",
+    "often": 1,
+    "nextword": [
+      {
+        "word": "you",
+        "often": 1
+      }
+    ]
+  },
+  {
+    "word": "you",
+    "often": 1,
+    "nextword":[
+      {
+        "word": "love",
+        "often": 1
+      },
+      {
+        "word": "must",
+        "often": 2
+      }
+    ]
+  },
+  {
+    "word": "today",
+    "often": 1,
+    "nextword": [
+      {
+        "word": "is",
+        "often": 5
+      }
+    ]
+  },
+  {
+    "word": "call",
+    "often": 1,
+    "nextword": [
+      {
+        "word": "me",
+        "often": 3
+      },
+      {
+        "word": "call",
+        "often": 21
+      }
+    ]
+  },
+  {
+    "word": "phone",
+    "often": 1,
+    "nextword": [
+      {
+        "word": "cost",
+        "often": 1
+      }
+    ]
+  },
+  {
+    "word": "open",
+    "often": 1,
+    "nextword": [
+      {
+        "word": "box",
+        "often": 1
+      }
+    ]
+  },
+  {
+    "word": "age",
+    "often": 1,
+    "nextword": [
+      {
+        "word": "is",
+        "often": 1
+      }
+    ]
+  }
+]

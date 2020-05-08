@@ -8,92 +8,126 @@
       @keydown.tab='handleTab'
     >
     <input type='text' class='msg'>
-    <button class='btn' @click='updataData'>commit</button>
+    <button class='btn' @click='updateData'>commit</button>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'AutoComplete',
   props: {
-    words: Array,
-    sentences: Array
+    wordList: Array
   },
 
   data () {
     return {
       word: '',
-      findwords: [],
-      findSentences: []
+      findwords: ''
     }
   },
 
   methods: {
     startWith () {
-      var len = this.word.length;
-      var tmpArr = [];
-      for (let i=0; i<this.words.length; i++) {
-        tmpArr[i] = this.words[i].substr(0, len)
+      var len = this.word.length
+      var tmpArr = []
+      // 开头都匹配后
+      for (let i=0; i<this.wordList.length; i++) {
+        tmpArr[i] = this.wordList[i].word.substr(0, len)
       }
 
-      this.findwords = []
+      var findObj = []
       for(let i=0; i<tmpArr.length; i++) {
         if (tmpArr[i] === this.word) {
-          this.findwords.push(this.words[i])
+          findObj.push(this.wordList[i])
         }
       }
-      this.handleFind(this.findwords);
+      this.handleFind(findObj)
       this.matchSentence()
-      //console.log(this.findwords)
     },
 
     matchSentence () {
       // 输入的字符是以任意字母开头且有空格时，开始匹配句子
-      var regex = /^[a-zA-Z]+\s/  
-      if (regex.test(this.word)) {
-        var words = this.word;
-        this.findSentences = []
-        for (let i=0; i<this.sentences.length; i++) {
-          if (this.sentences[i].indexOf(words) !== -1) {
-            this.findSentences.push(this.sentences[i])
+      // var regex = /^[a-zA-Z]+\s/
+      // 取得句子的最后一个单词，这个单词还可能正在输入中
+      var lastWord = this.word.trim().split(' ')
+          .pop().trim()
+
+      if (this.word.slice(-1) === ' ') {
+        var tmpArr = []
+        for (let i=0; i<this.wordList.length; i++) {
+          if (lastWord === this.wordList[i].word) {
+            tmpArr = this.wordList[i].nextword
+          } 
+        } 
+        if (tmpArr.length) {
+          this.handleFind(tmpArr)
+        }
+      } else {
+        var len = lastWord.length
+        var tmpArr1 = []
+        // 开头都匹配后
+        for (let i=0; i<this.wordList.length; i++) {
+          tmpArr1[i] = this.wordList[i].word.substr(0, len)
+        }
+
+        var findObj = []
+        for(let i=0; i<tmpArr1.length; i++) {
+          if (tmpArr1[i] === lastWord) {
+            findObj.push(this.wordList[i])
           }
         }
-        //console.log(this.findSentences)
-        this.handleFind(this.findSentences)
+        
+        if (findObj.length) {
+          this.handleFind(findObj)
+        }
       }
     },
 
-    handleTab (e) {
-      e.preventDefault()
-      var regex = /^[a-zA-Z]+\s/
-      if (this.findSentences[0] && regex.test(this.word)) {
-        this.word = this.findSentences[0] + ' '
-      } else if (this.findwords[0]) {
-        this.word = this.findwords[0]+' '
-      }
-      this.matchSentence()
-    },
-
-    updataData () {
-      this.$emit('updateData', this.word)
+    updateData () {
+      this.$emit('updateData', this.word.trim())
+      var msg = document.getElementsByClassName('msg')[0]
       this.word = ''
+      msg.value = ''
     },
 
     handleFind(arr) {
       var msg = document.getElementsByClassName('msg')[0]
-      arr = arr.sort((a,b)=>a.length-b.length)
-      // console.log(arr)
+      // 按照词频排序
+      arr = arr.sort((a,b)=>b.often-a.often)
+
       if (arr.length) {
-        msg.value = arr[0]
+        this.findwords = arr[0].word
+        // 如果当前是句子
+        if (this.word.slice(-1) === ' ') {
+          this.findwords = this.word.trim() + ' ' + arr[0].word
+          msg.value = this.findwords
+        } else {
+          if (this.word.indexOf(' ') !== -1) {
+            var res = this.word.trim().split(' ').slice(0, -1).join(' ')
+            msg.value = res + ' ' + arr[0].word
+            this.findwords = res + ' ' + arr[0].word
+          } else {
+            msg.value = arr[0].word
+          }
+        } 
       } else {
+        this.findwords = ''
         msg.value = ''
       }
       if (this.word === '') {
         msg.value = ''
       }
-    }
-  },
-  watch: {
+    },
+
+    handleTab (e) {
+      e.preventDefault()
+
+      if (this.findwords) {
+        this.word = this.findwords + ' '
+      }
+
+      this.matchSentence()
+    },
   }
 }
 </script>

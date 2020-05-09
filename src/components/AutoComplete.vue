@@ -6,6 +6,7 @@
       type='text' 
       @input='startWith'
       @keydown.tab='handleTab'
+      maxlength="50"
     >
     <input type='text' class='msg'>
     <button class='btn' @click='updateData'>commit</button>
@@ -54,6 +55,7 @@ export default {
 
       if (this.word.slice(-1) === ' ') {
         var tmpArr = []
+
         for (let i=0; i<this.wordList.length; i++) {
           if (lastWord === this.wordList[i].word) {
             tmpArr = this.wordList[i].nextword
@@ -100,12 +102,17 @@ export default {
         // 如果当前是句子
         if (this.word.slice(-1) === ' ') {
           this.findwords = this.word.trim() + ' ' + arr[0].word
-          msg.value = this.findwords
+          if (this.findwords.length < 50) {
+            msg.value = this.findwords
+          }
         } else {
           if (this.word.indexOf(' ') !== -1) {
             var res = this.word.trim().split(' ').slice(0, -1).join(' ')
-            msg.value = res + ' ' + arr[0].word
-            this.findwords = res + ' ' + arr[0].word
+            var tmpStr = res + ' ' + arr[0].word
+            if (tmpStr.length < 50) {
+              msg.value = tmpStr
+              this.findwords = tmpStr
+            }
           } else {
             msg.value = arr[0].word
           }
@@ -121,9 +128,11 @@ export default {
 
     handleTab (e) {
       e.preventDefault()
-
+      
       if (this.findwords) {
-        this.word = this.findwords + ' '
+        if (this.word.length < 50) {
+          this.word = this.findwords + ' '
+        } 
       }
 
       this.matchSentence()
@@ -140,25 +149,30 @@ export default {
 }
 input.inp {
   position: absolute;
-  width:200px;
+  padding-left:4px;
+  width:440px;
   height: 30px;
-  font-size:22px;
-  top:0;
-  left:0;
-  letter-spacing: 0px;
+  top:40%;
+  left:50%;
+  font-size:16px;
+  transform: translate(-50%,-50%);
   color:black;
   z-index:1;
   background: transparent;
+  border-radius: 4px;
+  border-style:solid;
+  outline: none;
 }
 
 input.msg {
   position: absolute;
-  width:200px;
+  padding-left:4px;
+  width:440px;
   height: 30px;
-  font-size:22px;
-  top:0;
-  left:0;
-  letter-spacing: 0px;
+  top:40%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  font-size:16px;
   pointer-events: none;
   color:grey;
   z-index:-1;
@@ -166,6 +180,11 @@ input.msg {
 
 button.btn {
   position: absolute;
-  top: 50px;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  width: 100px;
+  height: 28px;
+  font-size: 16px;
 }
 </style>

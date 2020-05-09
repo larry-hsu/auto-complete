@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <AutoComplete 
-      @updateData='updateData' 
-      :wordList='wordList'
+    @updateData='updateData' 
+    :wordList='wordList'
     >
     </AutoComplete>
   </div>
